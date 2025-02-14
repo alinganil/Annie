@@ -2,31 +2,20 @@
   "name": "annie-valentine",
   "version": "1.0.0",
   "description": "A special Valentine's page for Annie",
-  "main": "index.html",
   "scripts": {
-    "start": "serve",
-    "build": "echo 'No build step required'"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "serve": "^13.0.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yourusername/annie-valentine.git"
-  },
-  "keywords": [
-    "valentine",
-    "react",
-    "animation"
-  ],
-  "author": "Your Name",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/yourusername/annie-valentine/issues"
-  },
-  "homepage": "https://yourusername.github.io/annie-valentine"
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.1.0"
+  }
 }
