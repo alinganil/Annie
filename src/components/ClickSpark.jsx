@@ -1,5 +1,14 @@
-const ClickSpark = ({ sparkColor = "#FFF", sparkSize = 12, sparkRadius = 20, sparkCount = 12, duration = 600, extraScale = 1.2 }) => {
-  const [sparks, setSparks] = React.useState([]);
+import React, { useState } from 'react';
+
+const ClickSpark = ({ 
+  sparkColor = "#FFF", 
+  sparkSize = 12, 
+  sparkRadius = 20, 
+  sparkCount = 12, 
+  duration = 600, 
+  extraScale = 1.2 
+}) => {
+  const [sparks, setSparks] = useState([]);
 
   const createSpark = (x, y) => {
     const newSparks = Array.from({ length: sparkCount }, (_, i) => ({
@@ -39,6 +48,7 @@ const ClickSpark = ({ sparkColor = "#FFF", sparkSize = 12, sparkRadius = 20, spa
             transform: `rotate(${spark.angle}rad) translateX(${sparkRadius}px) scale(${extraScale})`,
             transition: `transform ${duration}ms ease-out, opacity ${duration}ms ease-out`,
             opacity: 0,
+            pointerEvents: 'none'
           }}
         />
       ))}
@@ -46,4 +56,4 @@ const ClickSpark = ({ sparkColor = "#FFF", sparkSize = 12, sparkRadius = 20, spa
   );
 };
 
-window.ClickSpark = ClickSpark;
+export default ClickSpark;
