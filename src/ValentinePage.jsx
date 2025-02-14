@@ -1,5 +1,10 @@
+import React, { useState } from 'react';
+import ClickSpark from './components/ClickSpark.jsx';
+import PixelTransition from './components/PixelTransition.jsx';
+import Particles from './components/Particles.jsx';
+
 const ValentinePage = () => {
-  const [showMessage, setShowMessage] = React.useState(false);
+  const [showMessage, setShowMessage] = useState(false);
   
   return (
     <div className="relative w-full min-h-screen bg-gradient-to-br from-pink-500 via-red-500 to-rose-600 overflow-hidden">
@@ -80,7 +85,7 @@ const ValentinePage = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0% {
             transform: translateY(100vh) rotate(0deg);
@@ -102,4 +107,4 @@ const ValentinePage = () => {
   );
 };
 
-window.ValentinePage = ValentinePage;
+export default ValentinePage;
