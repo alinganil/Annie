@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+
 const Particles = ({ 
   particleColors = ['#FFB6C1', '#FF69B4', '#FF1493'],
   particleCount = 150,
@@ -7,10 +9,10 @@ const Particles = ({
   moveParticlesOnHover = true,
   alphaParticles = true 
 }) => {
-  const [particles, setParticles] = React.useState([]);
-  const [mouse, setMouse] = React.useState({ x: 0, y: 0 });
+  const [particles, setParticles] = useState([]);
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const newParticles = Array.from({ length: particleCount }, () => ({
       id: Math.random(),
       x: Math.random() * 100,
@@ -23,12 +25,12 @@ const Particles = ({
     setParticles(newParticles);
   }, [particleCount, particleColors, particleBaseSize, speed]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const moveParticles = () => {
       setParticles(prev => prev.map(p => ({
         ...p,
-        x: (p.x + p.speedX) % 100,
-        y: (p.y + p.speedY) % 100
+        x: (p.x + p.speedX + 100) % 100,
+        y: (p.y + p.speedY + 100) % 100
       })));
     };
 
@@ -61,11 +63,11 @@ const Particles = ({
             style={{
               left: `${p.x}%`,
               top: `${p.y}%`,
-              width: p.size / distance,
-              height: p.size / distance,
+              width: p.size / Math.max(distance, 0.5),
+              height: p.size / Math.max(distance, 0.5),
               background: p.color,
               opacity: alphaParticles ? 0.6 : 1,
-              transform: `translate(-50%, -50%)`
+              transform: 'translate(-50%, -50%)'
             }}
           />
         );
@@ -74,4 +76,4 @@ const Particles = ({
   );
 };
 
-window.Particles = Particles;
+export default Particles;
