@@ -1,79 +1,65 @@
-import { useRef, useEffect, useState } from 'react';
-import './PixelTransition.css';
+import React, { useState, useEffect } from 'react';
 
-function PixelTransition({
-  firstContent,
-  secondContent,
-  gridSize = 7,
-  pixelColor = 'currentColor',
-  animationStepDuration = 0.3,
-  className = '',
-  style = {},
-  aspectRatio = '100%',
-}) {
-  const containerRef = useRef(null);
-  const pixelGridRef = useRef(null);
-  const activeRef = useRef(null);
-  const [isActive, setIsActive] = useState(false);
+const PixelTransition = ({ 
+  firstContent, 
+  secondContent, 
+  gridSize = 15, 
+  pixelColor = "#FF69B4", 
+  animationStepDuration = 0.5, 
+  aspectRatio = "75%" 
+}) => {
+  const [showSecond, setShowSecond] = useState(false);
+  const [pixels, setPixels] = useState([]);
 
   useEffect(() => {
-    const pixelGridEl = pixelGridRef.current;
-    if (!pixelGridEl) return;
-
-    pixelGridEl.innerHTML = '';
-
-    for (let row = 0; row < gridSize; row++) {
-      for (let col = 0; col < gridSize; col++) {
-        const pixel = document.createElement('div');
-        pixel.classList.add('pixelated-image-card__pixel');
-        pixel.style.backgroundColor = pixelColor;
-
-        const size = 100 / gridSize;
-        pixel.style.width = `${size}%`;
-        pixel.style.height = `${size}%`;
-        pixel.style.left = `${col * size}%`;
-        pixel.style.top = `${row * size}%`;
-        pixelGridEl.appendChild(pixel);
-      }
-    }
-  }, [gridSize, pixelColor]);
+    const newPixels = Array.from({ length: gridSize * gridSize }, (_, i) => ({
+      id: i,
+      x: (i % gridSize) * (100 / gridSize),
+      y: Math.floor(i / gridSize) * (100 / gridSize),
+      size: 100 / gridSize,
+      delay: Math.random() * animationStepDuration
+    }));
+    setPixels(newPixels);
+  }, [gridSize, animationStepDuration]);
 
   const handleClick = () => {
-    const pixelGridEl = pixelGridRef.current;
-    const activeEl = activeRef.current;
-    if (!pixelGridEl || !activeEl) return;
-
-    setIsActive(!isActive);
-    const pixels = pixelGridEl.querySelectorAll('.pixelated-image-card__pixel');
-    
-    pixels.forEach((pixel, i) => {
-      setTimeout(() => {
-        pixel.style.display = isActive ? 'none' : 'block';
-      }, i * (animationStepDuration * 1000 / pixels.length));
-    });
-
-    setTimeout(() => {
-      activeEl.style.display = !isActive ? 'block' : 'none';
-    }, animationStepDuration * 1000);
+    setShowSecond(!showSecond);
   };
 
   return (
-    <div
-      ref={containerRef}
-      className={`pixelated-image-card ${className}`}
-      style={style}
+    <div 
+      className="relative w-full"
+      style={{ paddingTop: aspectRatio }}
       onClick={handleClick}
     >
-      <div style={{ paddingTop: aspectRatio }} />
-      <div className="pixelated-image-card__default">
-        {firstContent}
+      <div className="absolute inset-0 overflow-hidden rounded-lg">
+        <div className={`absolute inset-0 transition-opacity duration-500 ${showSecond ? 'opacity-0' : 'opacity-100'}`}>
+          {firstContent}
+        </div>
+        <div className={`absolute inset-0 transition-opacity duration-500 ${showSecond ? 'opacity-100' : 'opacity-0'}`}>
+          {secondContent}
+        </div>
       </div>
-      <div className="pixelated-image-card__active" ref={activeRef}>
-        {secondContent}
+      <div className="absolute inset-0 pointer-events-none">
+        {pixels.map(pixel => (
+          <div
+            key={pixel.id}
+            className="absolute transition-opacity duration-500"
+            style={{
+              left: `${pixel.x}%`,
+              top: `${pixel.y}%`,
+              width: `${pixel.size}%`,
+              height: `${pixel.size}%`,
+              background: pixelColor,
+              opacity: showSecond ? 0 : 1,
+              transitionDelay: `${pixel.delay}s`,
+              pointerEvents: 'none'
+            }}
+          />
+        ))}
       </div>
-      <div className="pixelated-image-card__pixels" ref={pixelGridRef} />
     </div>
   );
-}
+};
 
 export default PixelTransition;
