@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import ValentinePage from './ValentinePage'
+import ValentinePage from './ValentinePage.jsx'
 import '../styles/main.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
